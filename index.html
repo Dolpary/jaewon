@@ -1,143 +1,178 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <meta property="og:title" content="황재원 팬명록" />
-    <meta property="og:description" content="재원이에게 글 남기기" />
-    <meta property="og:image" content="images/main.jpg" />
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-
-    <title>황재원초미니홈피 - 팬명록</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;300;400;500;600;700;900&display=swap" rel="stylesheet">
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>Practice animate</title>
     <style>
-        * {
-            font-family: 'Noto Serif KR', serif;
+      * {
+          margin: 0;
+          padding: 0;
         }
-        .mypic {
-            width: 100%;
-            height: 300px;
-
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/main.jpg');
-            background-position: center 30%;
-            background-size: cover;
-
-            color: white;
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        .top {
+          width: 100%;
+          height: 400px;
+          background-image: url("images/top.jpg");
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          text-align: center;
+        
         }
-
-        .mypost {
-            width: 95%;
-            max-width: 500px;
-            margin: 20px auto 20px auto;
-
-            box-shadow: 0px 0px 3px 0px black;
-            padding: 20px;
+        .container {
+          position: relative;
+          width: 100%
+          max-width: 1160px;
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          transform-style: preserve-3d;
+          perspective: 500px;
+          margin: auto;
         }
-
-        .mypost > button {
-            margin-top: 15px;
+        .container .box {
+          position: relative;
+          width: 275px;
+          height: 275px;
+          background: #000;
+          transition: 0.5s;
+          transform-style: preserve-3d;
+          overflow: hidden;
+          margin-right: 15px;
+          margin-top: 45px;
         }
-
-        .mycards {
-            width: 95%;
-            max-width: 500px;
-            margin: auto;
+        .container:hover .box {
+          transform: rotateY(25deg);
         }
-
-        .mycards > .card {
-            margin-top: 10px;
-            margin-bottom: 10px;
+        .container .box:hover ~ .box {
+          transform: rotateY(-25deg);
+        }
+        .container .box:hover {
+          transform: rotateY(0deg) scale(1.25);
+          z-index: 1;
+          box-shadow: 0 25px 40px rgba(0,0,0,0.5);
+        }
+        .container .box .imgBx {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+        }
+        .container .box .imgBx:before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(180deg,#f00,#000);
+          z-index: 1;
+          opacity: 0;
+          transition: 0.5s;
+          mix-blend-mode: multiply;
+        }
+        .container .box:hover .imgBx:before {
+          opacity: 1;
+        }
+        .container .box .imgBx img {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .container .box .content {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 1;
+          display: flex;
+          padding: 20px;
+          align-items: flex-end;
+          box-sizing: border-box;
+        }
+        .container .box .content h2 {
+          color: #fff;
+          transition: 0.5s;
+          text-transform: uppercase;
+          margin-bottom: 5px;
+          font-size: 20px;
+          transform: translateY(200px);
+          transition-delay: 0.3s;
+        }
+        .container .box:hover .content h2 {
+          transform: translateY(0px);
+        }
+        .container .box .content p {
+          color: #fff;
+          transition: 0.5s;
+          font-size: 14px;
+          transform: translateY(200px);
+          transition-delay: 0.4s;
+        }
+        .container .box:hover .content p {
+          transform: translateY(0px);
         }
     </style>
-    <script>
-        $(document).ready(function(){
-            set_temp()
-            show_comment()
-        });
-        function set_temp(){
-            $.ajax({
-                type: "GET",
-                url: "http://spartacodingclub.shop/sparta_api/weather/seoul",
-                data: {},
-                success: function (response) {
-                    $('#temp').text(response['temp'])
-                }
-            })
-        }
-        function save_comment(){
-            let name = $('#name').val()
-            let comment = $('#comment').val()
-
-            $.ajax({
-                type: 'POST',
-                url: '/homework',
-                data: {name_give: name, comment_give: comment},
-                success: function (response) {
-                    alert(response['msg'])
-                    window.location.reload()
-                }
-            })
-        }
-        function show_comment(){
-            $.ajax({
-                type: "GET",
-                url: "/homework",
-                data: {},
-                success: function (response) {
-                    let rows = response['orders']
-                    for (i = 0 ; i < rows.length; i++){
-                        let name = rows[i]['name']
-                        let comment = rows[i]['comment']
-
-                        let temp_html=`<div class="card">
-                                            <div class="card-body">
-                                                <blockquote class="blockquote mb-0">
-                                                    <p>${comment}</p>
-                                                    <footer class="blockquote-footer">${name}</footer>
-                                                </blockquote>
-                                            </div>
-                                        </div>`
-
-                        $('#comment-list').append(temp_html)
-                    }
-                }
-            });
-        }
-    </script>
-</head>
-<body>
-    <div class="mypic">
-        <h1>황재원 팬명록</h1>
-        <p>현재기온: <span id="temp">36</span>도</p>
+  </head>
+  <body>
+    <div class="top">
+      <div style="padding-top : 100px">
+      <h1>재원이 미니홈페이지</h1>
+      </div>
     </div>
-    <div class="mypost">
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="name" placeholder="url">
-            <label for="floatingInput">닉네임</label>
+    <div class="container">
+      <div class="box">
+        <div class="imgBx">
+          <img src="images/spring.jpg">
         </div>
-        <div class="form-floating">
-            <textarea class="form-control" placeholder="Leave a comment here" id="comment"
-                style="height: 100px"></textarea>
-            <label for="floatingTextarea2">응원댓글</label>
+        <div class="content">
+          <div>
+            <h2>2022년 재원이의봄</h2>
+            <p>수의사선생님이 되어본 재원이에요!! 너무 귀엽지않나요?? ^^
+            </p>
+          </div>
         </div>
-        <button onclick="save_comment()" type="button" class="btn btn-dark">응원 남기기</button>
+      </div>
+      <div class="box">
+        <div class="imgBx">
+          <img src="images/summer.jpg">
+        </div>
+        <div class="content">
+          <div>
+            <h2>2022년 재원이의여름</h2>
+            <p>처음 바나나슬러시를 먹고 맛있어 하던 재원이. 수염 생기는걸 엄청 재미있어 했답니다.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="box">
+        <div class="imgBx">
+          <img src="images/autumm.jpg">
+        </div>
+        <div class="content">
+          <div>
+            <h2>2022년 재원이의가을</h2>
+            <p>낚엽만 보면 줏으러 다니는 재원이. 가을에는 낙엽에 바스락거림이 너무 재미 있었나봅니다.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="box">
+        <div class="imgBx">
+          <img src="images/winter.jpg">
+        </div>
+        <div class="content">
+          <div>
+            <h2>2022년 재원이의겨울</h2>
+            <p>눈이 마냥 신기한가봐요. 눈만 보면 덤벼 드네요!! 귀염둥이!!
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="mycards" id="comment-list">
-
-    </div>
-</body>
+  </body>
 </html>
