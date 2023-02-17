@@ -31,11 +31,3 @@ def homework_get():
 
 if __name__ == '__main__':
    app.run('0.0.0.0', port=5000, debug=True)
-
-@app.route("/homework", methods=["GET"])
-def homework_get():
-    pans_list = list(db.pans.find({}, {'_id': False}))
-    return jsonify({'pans':pans_list})
-
-if __name__ == '__main__':
-   app.run('0.0.0.0', port=5000, debug=True)
